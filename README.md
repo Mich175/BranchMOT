@@ -91,6 +91,10 @@ association ECE/Brier score, decision latency, and runtime.
 See [`docs/research_plan.md`](docs/research_plan.md) for the staged research
 plan and ablation matrix.
 
+For GPU providers, private-repository access, persistent dataset storage, and
+the reproducible cloud workflow, see [`docs/CLOUD_GPU.md`](docs/CLOUD_GPU.md).
+
 ## Status
 
 Early research prototype. APIs and experiment formats may change.
+

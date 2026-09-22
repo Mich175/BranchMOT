@@ -23,6 +23,18 @@ def test_ambiguous_crossing_delays_then_uses_future_evidence() -> None:
     assert assignment == (0, 1)
 
 
+def test_future_evidence_can_reverse_initial_preference() -> None:
+    tracker = BranchingAssociator(
+        AssociationConfig(beam_size=2, max_delay=3, entropy_threshold=0.5)
+    )
+
+    # The first frame slightly favors the wrong swap.
+    assert tracker.step(np.array([[0.45, 0.55], [0.55, 0.45]])) is None
+    # A later clear observation should select the consistent identity mapping.
+    assignment = tracker.step(np.array([[0.95, 0.05], [0.05, 0.95]]))
+    assert assignment == (0, 1)
+
+
 def test_max_delay_forces_bounded_commitment() -> None:
     tracker = BranchingAssociator(
         AssociationConfig(beam_size=2, max_delay=1, entropy_threshold=0.1)
@@ -37,4 +49,3 @@ def test_invalid_matrix_is_rejected() -> None:
     tracker = BranchingAssociator()
     with pytest.raises(ValueError, match="square"):
         tracker.step(np.ones((2, 3)))
-

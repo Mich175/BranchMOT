@@ -13,6 +13,10 @@ cost and latency of offline global optimization?
 3. Evaluate on DanceTrack validation with identical detections.
 4. Stratify association accuracy by occlusion length and target similarity.
 
+Delayed episodes require short-term observation-chain alignment across frames;
+without this constraint, framewise hypotheses factorize and future evidence
+cannot revise an earlier identity preference.
+
 The integration contract and cache insertion point are documented in
 [`MOTIP_INTEGRATION.md`](MOTIP_INTEGRATION.md).
 
@@ -30,6 +34,7 @@ and post-occlusion slices, with mean delay below eight frames.
 - Integrate with an ID-prediction baseline.
 - Replace exhaustive local permutations with sparse conflict-subgraph search.
 - Treat rectangular conflict components explicitly as birth/death cases.
+- Score newborn assignments and missed tracks inside the same delayed beam.
 - Add appearance, motion, mask, and group-relation path scores.
 
 ## Required ablations

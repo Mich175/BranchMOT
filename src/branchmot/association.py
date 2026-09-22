@@ -42,11 +42,16 @@ class Hypothesis:
 
 
 class BranchingAssociator:
-    """Maintains a small beam of recent one-to-one identity assignments.
+    """Maintains a small beam of persistent identity assignments.
 
     Rows of ``probabilities`` correspond to detections and columns correspond
-    to active track identities. This MVP assumes an equal number of detections
-    and tracks inside an already selected ambiguous subgraph.
+    to active track identities. During a delayed episode, row positions must
+    represent the same short-term observation chains across frames (for
+    example, mask-propagated instances). Each hypothesis therefore keeps one
+    fixed chain-to-identity mapping while later evidence accumulates.
+
+    This MVP assumes an equal number of observation chains and tracks inside
+    an already selected ambiguous subgraph.
     """
 
     def __init__(self, config: AssociationConfig | None = None) -> None:
@@ -84,11 +89,17 @@ class BranchingAssociator:
 
         probs = self._validate(probabilities)
         candidates: list[Hypothesis] = []
-        for hypothesis in self._beam:
+        if self._age == 0:
             for assignment in permutations(range(probs.shape[1]), probs.shape[0]):
                 likelihood = probs[np.arange(probs.shape[0]), assignment]
                 score = float(np.log(likelihood + self.config.eps).sum())
-                candidates.append(hypothesis.extend(tuple(assignment), score))
+                candidates.append(self._beam[0].extend(tuple(assignment), score))
+        else:
+            for hypothesis in self._beam:
+                assignment = hypothesis.assignments[0]
+                likelihood = probs[np.arange(probs.shape[0]), assignment]
+                score = float(np.log(likelihood + self.config.eps).sum())
+                candidates.append(hypothesis.extend(assignment, score))
 
         candidates.sort(key=lambda item: item.log_score, reverse=True)
         self._beam = candidates[: self.config.beam_size]

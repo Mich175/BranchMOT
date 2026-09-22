@@ -1,10 +1,14 @@
+from dataclasses import replace
 from types import SimpleNamespace
 
 import numpy as np
 
 from branchmot import (
+    ConditionalMemoryConfig,
+    HypothesisConditionedAssociator,
     MOTIPBranchDecoder,
     MOTIPBranchObservation,
+    MOTIPConditionalTracker,
     MOTIPStateAdapter,
 )
 
@@ -169,3 +173,38 @@ def test_branch_update_rejects_duplicate_fixed_identity() -> None:
         assert "more than once" in str(error)
     else:
         raise AssertionError("duplicate full-frame identity should fail closed")
+
+
+def test_conditional_tracker_freezes_canonical_state_until_commit() -> None:
+    runtime = _runtime()
+    adapter = MOTIPStateAdapter(runtime)
+
+    class StubDecoder:
+        @staticmethod
+        def decode(state, observation):
+            if observation == "ambiguous":
+                return np.array([[0.49, 0.51], [0.51, 0.49]])
+            if state.next_id == 100:
+                return np.array([[0.95, 0.05], [0.05, 0.95]])
+            return np.array([[0.60, 0.40], [0.40, 0.60]])
+
+        @staticmethod
+        def update(state, _observation, assignment):
+            return replace(state, next_id=100 if assignment == (0, 1) else 200)
+
+    controller = MOTIPConditionalTracker(
+        adapter,
+        associator=HypothesisConditionedAssociator(
+            ConditionalMemoryConfig(
+                max_branches=2, max_delay=3, commit_posterior=0.8
+            )
+        ),
+        branch_decoder=StubDecoder(),
+    )
+    assert controller.step("ambiguous") is None
+    assert runtime.next_id == 2
+
+    decision = controller.step("future")
+    assert decision is not None
+    assert decision.assignment == (0, 1)
+    assert runtime.next_id == 100

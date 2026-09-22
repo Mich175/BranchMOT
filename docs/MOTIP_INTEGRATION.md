@@ -96,6 +96,13 @@ filters inactive tracks, and constructs stable-ID results inside the private
 transaction. The returned successor can be retained as a branch or committed
 atomically through `MOTIPStateAdapter`.
 
+`MOTIPConditionalTracker` closes the loop: one `step(observation)` call runs
+the hypothesis-conditioned associator with the decoder/update callbacks. While
+the decision is unresolved, canonical MOTIP state remains byte-for-byte
+logically unchanged; once the posterior or latency rule fires, the winning
+successor is committed atomically. `reset()` discards pending branches without
+touching canonical state.
+
 ## Causal identity targets
 
 MOTIP's vocabulary labels are recyclable and therefore cannot be compared

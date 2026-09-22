@@ -7,6 +7,10 @@ from typing import Any
 
 import numpy as np
 
+from .branch_memory import (
+    ConditionalMemoryDecision,
+    HypothesisConditionedAssociator,
+)
 from .motip_state import MOTIPRuntimeState, MOTIPStateAdapter
 from .motip_tap import _to_numpy, _unwrap_model, probabilities_from_logits
 
@@ -196,3 +200,38 @@ class MOTIPBranchDecoder:
         active = set(_to_numpy(state.trajectory_id_labels[0]).astype(int).tolist())
         if not set(labels).issubset(active):
             raise ValueError("candidate ID labels must be active in branch memory")
+
+
+class MOTIPConditionalTracker:
+    """End-to-end controller that commits only a winning private MOTIP state."""
+
+    def __init__(
+        self,
+        state_adapter: MOTIPStateAdapter,
+        *,
+        associator: HypothesisConditionedAssociator | None = None,
+        branch_decoder: MOTIPBranchDecoder | None = None,
+    ) -> None:
+        self.state_adapter = state_adapter
+        self.associator = associator or HypothesisConditionedAssociator()
+        self.branch_decoder = branch_decoder or MOTIPBranchDecoder(state_adapter)
+
+    def step(
+        self, observation: MOTIPBranchObservation
+    ) -> ConditionalMemoryDecision | None:
+        """Advance every private branch and atomically commit a decision."""
+
+        decision = self.associator.step(
+            self.state_adapter.capture(),
+            observation,
+            decode=self.branch_decoder.decode,
+            update=self.branch_decoder.update,
+        )
+        if decision is not None:
+            self.state_adapter.commit(decision.memory)
+        return decision
+
+    def reset(self) -> None:
+        """Discard unresolved branches without changing canonical MOTIP state."""
+
+        self.associator.reset()

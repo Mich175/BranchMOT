@@ -36,6 +36,7 @@ from .mot_ground_truth import (
     read_mot_ground_truth,
 )
 from .motip_adapter import MOTIPProjection, make_cache_frame, project_motip_scores
+from .motip_branch import MOTIPBranchDecoder, MOTIPBranchObservation
 from .motip_state import (
     MOTIP_RUNTIME_COMMIT,
     MOTIPRuntimeState,
@@ -62,6 +63,8 @@ __all__ = [
     "IdentityTargetStats",
     "LifecycleAssociator",
     "LifecycleHypothesis",
+    "MOTIPBranchDecoder",
+    "MOTIPBranchObservation",
     "MOTIPProjection",
     "MOTIPRuntimeState",
     "MOTIPScoreTap",

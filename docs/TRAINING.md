@@ -108,6 +108,13 @@ implementation for equivalence tests. Conflict-column copy-on-write is the
 subsequent optimization and must reproduce the reference branch scores and
 committed state exactly.
 
+`MOTIPBranchDecoder.decode` already supplies the inference engine's `decode`
+callback using real upstream trajectory modeling and ID-decoder logits. The
+remaining runtime callback must apply a proposed full-frame assignment to a
+private state, including newborn-capacity filtering and stable-ID result
+construction; it must be equivalence-tested against unmodified MOTIP update
+before real benchmark claims.
+
 ## Leakage and evaluation rules
 
 - Split by video sequence before mining clips.

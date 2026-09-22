@@ -80,6 +80,14 @@ required fields or the ID-vocabulary size differ. A later performance pass can
 replace full safe clones with conflict-column copy-on-write storage without
 changing the inference API.
 
+`MOTIPBranchDecoder` is the score-side bridge. Given activated boxes/features,
+local detection rows, and candidate internal ID labels, it transactionally
+activates each branch state and calls upstream `_get_id_pred_labels`. A
+temporary decoder hook captures the branch-conditioned logits, projects them
+onto the local candidate labels, normalizes the local mass, removes the hook,
+and restores canonical state. Candidate labels must be active in that branch;
+shape, vocabulary, and decoder-call mismatches fail closed.
+
 ## Causal identity targets
 
 MOTIP's vocabulary labels are recyclable and therefore cannot be compared

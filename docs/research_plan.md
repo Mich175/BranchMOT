@@ -13,6 +13,10 @@ cost and latency of offline global optimization?
 3. Evaluate on DanceTrack validation with identical detections.
 4. Stratify association accuracy by occlusion length and target similarity.
 
+DanceTrack/MOTChallenge ground truth is matched to cached detections with
+one-to-one IoU assignment. Annotation gaps define candidate occlusion events;
+reported recovery metrics must state the IoU threshold and frame-index offset.
+
 Delayed episodes require short-term observation-chain alignment across frames;
 without this constraint, framewise hypotheses factorize and future evidence
 cannot revise an earlier identity preference.

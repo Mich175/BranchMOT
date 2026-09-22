@@ -75,6 +75,11 @@ def replay_aligned_episode(
         if np.any(row_mass <= 0):
             raise ValueError("every replay row needs active-track probability mass")
         probs = probs / row_mass
+        if any(
+            track is None or track not in reference_tracks
+            for track in frame.ground_truth_track_ids
+        ):
+            raise ValueError("replay GT IDs must map to active track columns")
         target = tuple(reference_tracks.index(track) for track in frame.ground_truth_track_ids)
         immediate = best_one_to_one(probs)
         immediate_correct += sum(a == b for a, b in zip(immediate, target))

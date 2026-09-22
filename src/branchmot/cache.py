@@ -20,7 +20,7 @@ class AssociationFrame:
     detection_ids: list[int]
     track_ids: list[int]
     probabilities: list[list[float]]
-    ground_truth_track_ids: list[int] | None = None
+    ground_truth_track_ids: list[int | None] | None = None
     newborn_probabilities: list[float] | None = None
     boxes_xyxy: list[list[float]] | None = None
 

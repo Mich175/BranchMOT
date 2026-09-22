@@ -15,6 +15,13 @@ from .linking import (
     link_cache_frames,
 )
 from .metrics import association_calibration
+from .mot_ground_truth import (
+    MOTObject,
+    OcclusionEvent,
+    annotate_cache_with_ground_truth,
+    find_occlusion_events,
+    read_mot_ground_truth,
+)
 from .motip_adapter import MOTIPProjection, make_cache_frame, project_motip_scores
 from .motip_tap import MOTIPScoreTap, probabilities_from_logits
 from .replay import ReplayResult, best_one_to_one, replay_aligned_episode
@@ -29,19 +36,24 @@ __all__ = [
     "LifecycleHypothesis",
     "MOTIPProjection",
     "MOTIPScoreTap",
+    "MOTObject",
     "ObservationChainLinker",
+    "OcclusionEvent",
     "ReplayResult",
+    "annotate_cache_with_ground_truth",
     "association_calibration",
     "best_one_to_one",
     "box_iou_xyxy",
     "decompose_conflicts",
     "enumerate_lifecycle_assignments",
+    "find_occlusion_events",
     "linear_sum_assignment",
     "link_cache_frames",
     "make_cache_frame",
     "probabilities_from_logits",
     "project_motip_scores",
     "read_jsonl",
+    "read_mot_ground_truth",
     "replay_aligned_episode",
     "write_jsonl",
 ]

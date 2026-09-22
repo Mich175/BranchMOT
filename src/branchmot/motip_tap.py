@@ -166,5 +166,10 @@ class MOTIPScoreTap:
         boxes_xyxy = np.empty_like(boxes_cxcywh)
         boxes_xyxy[:, :2] = boxes_cxcywh[:, :2] - boxes_cxcywh[:, 2:] / 2.0
         boxes_xyxy[:, 2:] = boxes_cxcywh[:, :2] + boxes_cxcywh[:, 2:] / 2.0
+        if hasattr(self.runtime_tracker, "bbox_unnorm"):
+            scale = _to_numpy(self.runtime_tracker.bbox_unnorm).astype(np.float64)
+            if scale.shape != (4,):
+                raise ValueError("MOTIP bbox_unnorm must have four coordinates")
+            boxes_xyxy *= scale
         self._pending_boxes_xyxy = boxes_xyxy.tolist()
         return result

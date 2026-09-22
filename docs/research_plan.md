@@ -17,6 +17,10 @@ Delayed episodes require short-term observation-chain alignment across frames;
 without this constraint, framewise hypotheses factorize and future evidence
 cannot revise an earlier identity preference.
 
+The initial linker uses motion-predicted boxes, IoU/center-distance gating, and
+global one-to-one matching. It is a controlled baseline for later mask- or
+flow-propagated chains, not a final contribution claim.
+
 The integration contract and cache insertion point are documented in
 [`MOTIP_INTEGRATION.md`](MOTIP_INTEGRATION.md).
 

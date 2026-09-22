@@ -8,6 +8,12 @@ from .lifecycle import (
     LifecycleHypothesis,
     enumerate_lifecycle_assignments,
 )
+from .linking import (
+    ObservationChainLinker,
+    box_iou_xyxy,
+    linear_sum_assignment,
+    link_cache_frames,
+)
 from .metrics import association_calibration
 from .motip_adapter import MOTIPProjection, make_cache_frame, project_motip_scores
 from .motip_tap import MOTIPScoreTap, probabilities_from_logits
@@ -24,13 +30,17 @@ __all__ = [
     "LifecycleHypothesis",
     "MOTIPProjection",
     "MOTIPScoreTap",
+    "ObservationChainLinker",
     "PreflightReport",
     "ReplayResult",
     "association_calibration",
     "best_one_to_one",
+    "box_iou_xyxy",
     "check_experiment",
     "decompose_conflicts",
     "enumerate_lifecycle_assignments",
+    "linear_sum_assignment",
+    "link_cache_frames",
     "make_cache_frame",
     "probabilities_from_logits",
     "project_motip_scores",

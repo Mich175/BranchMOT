@@ -75,6 +75,12 @@ class MOTIPScoreTap:
         self._context: _FrameContext | None = None
         self._frames: list[AssociationFrame] = []
         self._fallback_frame_index = 0
+        self._pending_boxes_xyxy: list[list[float]] | None = None
+        self._original_activate = getattr(
+            runtime_tracker, "_get_activate_detections", None
+        )
+        if self._original_activate is not None:
+            runtime_tracker._get_activate_detections = self._capture_detections
 
     @property
     def frames(self) -> tuple[AssociationFrame, ...]:
@@ -97,6 +103,9 @@ class MOTIPScoreTap:
         if self._handle is not None:
             self._handle.remove()
             self._handle = None
+        if self._original_activate is not None:
+            self.runtime_tracker._get_activate_detections = self._original_activate
+            self._original_activate = None
 
     def write(self, path: str | Path) -> None:
         write_jsonl(path, self._frames)
@@ -142,7 +151,20 @@ class MOTIPScoreTap:
             id_scores=scores,
             newborn_label=int(self.runtime_tracker.num_id_vocabulary),
             ground_truth_track_ids=ground_truth,
+            boxes_xyxy=self._pending_boxes_xyxy,
         )
         self._frames.append(frame)
         self._context = None
         self._fallback_frame_index = frame_index + 1
+        self._pending_boxes_xyxy = None
+
+    def _capture_detections(self, *args: Any, **kwargs: Any) -> Any:
+        """Call MOTIP's original selector and retain its exact activated boxes."""
+
+        result = self._original_activate(*args, **kwargs)
+        boxes_cxcywh = _to_numpy(result[2]).astype(np.float64)
+        boxes_xyxy = np.empty_like(boxes_cxcywh)
+        boxes_xyxy[:, :2] = boxes_cxcywh[:, :2] - boxes_cxcywh[:, 2:] / 2.0
+        boxes_xyxy[:, 2:] = boxes_cxcywh[:, :2] + boxes_cxcywh[:, 2:] / 2.0
+        self._pending_boxes_xyxy = boxes_xyxy.tolist()
+        return result

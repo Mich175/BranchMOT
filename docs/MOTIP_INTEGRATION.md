@@ -45,6 +45,11 @@ Default per-frame row indices are suitable for score inspection only. Delayed
 replay requires `detection_ids` to represent stable short-term observation
 chains produced by mask propagation, optical flow, or another linker.
 
+The tap also wraps MOTIP's existing `_get_activate_detections` call and stores
+the exact selected normalized boxes; the original method is restored when the
+tap closes. `branchmot.link_cache_frames` converts these boxes into short-term
+chain IDs using the motion/IoU linker.
+
 ## Why JSONL first
 
 The MVP format is deliberately transparent and streamable. It makes schema

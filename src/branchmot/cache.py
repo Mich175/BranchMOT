@@ -22,6 +22,7 @@ class AssociationFrame:
     probabilities: list[list[float]]
     ground_truth_track_ids: list[int] | None = None
     newborn_probabilities: list[float] | None = None
+    boxes_xyxy: list[list[float]] | None = None
 
     def validate(self) -> None:
         probs = np.asarray(self.probabilities, dtype=np.float64)
@@ -49,6 +50,12 @@ class AssociationFrame:
             total = probs.sum(axis=1) + newborn
             if np.any(np.abs(total - 1.0) > 1e-5):
                 raise ValueError("track and newborn probabilities must sum to one")
+        if self.boxes_xyxy is not None:
+            boxes = np.asarray(self.boxes_xyxy, dtype=np.float64)
+            if boxes.shape != (len(self.detection_ids), 4):
+                raise ValueError("boxes must have shape [detections, 4]")
+            if np.any(~np.isfinite(boxes)) or np.any(boxes[:, 2:] < boxes[:, :2]):
+                raise ValueError("boxes must be finite, valid xyxy coordinates")
 
 
 def write_jsonl(path: str | Path, frames: Iterable[AssociationFrame]) -> None:

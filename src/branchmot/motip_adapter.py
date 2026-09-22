@@ -56,6 +56,7 @@ def make_cache_frame(
     id_scores: np.ndarray,
     newborn_label: int,
     ground_truth_track_ids: list[int] | None = None,
+    boxes_xyxy: list[list[float]] | None = None,
 ) -> AssociationFrame:
     """Create a validated cache record directly from MOTIP runtime tensors."""
 
@@ -69,7 +70,7 @@ def make_cache_frame(
         probabilities=projection.track_probabilities.tolist(),
         ground_truth_track_ids=ground_truth_track_ids,
         newborn_probabilities=projection.newborn_probabilities.tolist(),
+        boxes_xyxy=boxes_xyxy,
     )
     frame.validate()
     return frame
-

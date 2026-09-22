@@ -41,3 +41,14 @@ def test_cache_rejects_non_finite_values() -> None:
     with pytest.raises(ValueError, match="finite"):
         frame.validate()
 
+
+def test_cache_validates_optional_boxes() -> None:
+    frame = AssociationFrame(
+        frame_index=0,
+        detection_ids=[0],
+        track_ids=[1],
+        probabilities=[[1.0]],
+        boxes_xyxy=[[5.0, 5.0, 4.0, 8.0]],
+    )
+    with pytest.raises(ValueError, match="boxes"):
+        frame.validate()

@@ -3,6 +3,12 @@
 from .association import AssociationConfig, BranchingAssociator, Hypothesis
 from .cache import AssociationFrame, read_jsonl, write_jsonl
 from .conflicts import ConflictComponent, decompose_conflicts
+from .identity_targets import (
+    IdentityAssignmentMetrics,
+    IdentityTargetStats,
+    attach_internal_identity_targets,
+    identity_assignment_metrics,
+)
 from .lifecycle import (
     LifecycleAssociator,
     LifecycleHypothesis,
@@ -32,6 +38,8 @@ __all__ = [
     "BranchingAssociator",
     "ConflictComponent",
     "Hypothesis",
+    "IdentityAssignmentMetrics",
+    "IdentityTargetStats",
     "LifecycleAssociator",
     "LifecycleHypothesis",
     "MOTIPProjection",
@@ -42,11 +50,13 @@ __all__ = [
     "ReplayResult",
     "annotate_cache_with_ground_truth",
     "association_calibration",
+    "attach_internal_identity_targets",
     "best_one_to_one",
     "box_iou_xyxy",
     "decompose_conflicts",
     "enumerate_lifecycle_assignments",
     "find_occlusion_events",
+    "identity_assignment_metrics",
     "linear_sum_assignment",
     "link_cache_frames",
     "make_cache_frame",

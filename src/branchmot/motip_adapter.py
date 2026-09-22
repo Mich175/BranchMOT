@@ -57,6 +57,10 @@ def make_cache_frame(
     newborn_label: int,
     ground_truth_track_ids: list[int] | None = None,
     boxes_xyxy: list[list[float]] | None = None,
+    detection_scores: list[float] | None = None,
+    assigned_track_ids: list[int] | None = None,
+    active_output_ids: list[int] | None = None,
+    assigned_output_ids: list[int] | None = None,
 ) -> AssociationFrame:
     """Create a validated cache record directly from MOTIP runtime tensors."""
 
@@ -71,6 +75,10 @@ def make_cache_frame(
         ground_truth_track_ids=ground_truth_track_ids,
         newborn_probabilities=projection.newborn_probabilities.tolist(),
         boxes_xyxy=boxes_xyxy,
+        detection_scores=detection_scores,
+        assigned_track_ids=assigned_track_ids,
+        active_output_ids=active_output_ids,
+        assigned_output_ids=assigned_output_ids,
     )
     frame.validate()
     return frame

@@ -23,6 +23,8 @@ The initial implementation provides:
 - entropy- and margin-based ambiguity detection;
 - top-K beam association with one-to-one assignment constraints;
 - temporal path rescoring and bounded decision delay;
+- causal mapping from stable tracker IDs to dataset identity targets;
+- post-filter MOTIP capture of boxes, scores, internal labels, and output IDs;
 - deterministic unit tests for crossing and unambiguous tracks;
 - a DanceTrack-oriented experiment configuration.
 

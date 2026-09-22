@@ -20,6 +20,16 @@ def test_cache_round_trip(tmp_path: Path) -> None:
     assert list(read_jsonl(path)) == [frame]
 
 
+def test_reader_accepts_version_one_cache(tmp_path: Path) -> None:
+    path = tmp_path / "old.jsonl"
+    path.write_text(
+        '{"schema_version":1}\n'
+        '{"frame_index":0,"detection_ids":[],"track_ids":[],"probabilities":[]}\n',
+        encoding="utf-8",
+    )
+    assert next(read_jsonl(path)).frame_index == 0
+
+
 def test_cache_rejects_probability_mass_above_one() -> None:
     frame = AssociationFrame(
         frame_index=0,

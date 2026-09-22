@@ -88,6 +88,14 @@ onto the local candidate labels, normalizes the local mass, removes the hook,
 and restores canonical state. Candidate labels must be active in that branch;
 shape, vocabulary, and decoder-call mismatches fail closed.
 
+`MOTIPBranchDecoder.update` supplies the matching inference-engine `update`
+callback. It combines the local permutation with fixed decisions for every
+non-conflict detection, checks one-to-one IDs and vocabulary capacity, runs
+MOTIP newborn allocation, updates the recency queue and trajectory tensors,
+filters inactive tracks, and constructs stable-ID results inside the private
+transaction. The returned successor can be retained as a branch or committed
+atomically through `MOTIPStateAdapter`.
+
 ## Causal identity targets
 
 MOTIP's vocabulary labels are recyclable and therefore cannot be compared

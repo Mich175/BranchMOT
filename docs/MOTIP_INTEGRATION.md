@@ -27,6 +27,24 @@ The exporter should be called immediately after step 2. It must pass:
 the active tracks and the newborn class. Records are written with
 `branchmot.cache.write_jsonl`.
 
+## Non-invasive exporter
+
+`branchmot.MOTIPScoreTap` registers a forward hook on MOTIP's `id_decoder` and
+captures its logits without modifying the tracker. A minimal runner is in
+[`integrations/motip/export_example.py`](../integrations/motip/export_example.py).
+
+```python
+with MOTIPScoreTap(runtime_tracker) as tap:
+    for frame_index, image in frames:
+        tap.set_frame_context(frame_index)
+        runtime_tracker.update(image=image)
+    tap.write("outputs/branchmot_cache/sequence.jsonl")
+```
+
+Default per-frame row indices are suitable for score inspection only. Delayed
+replay requires `detection_ids` to represent stable short-term observation
+chains produced by mask propagation, optical flow, or another linker.
+
 ## Why JSONL first
 
 The MVP format is deliberately transparent and streamable. It makes schema
@@ -39,4 +57,3 @@ without changing `AssociationFrame`.
 MOTIP is Apache-2.0 licensed. BranchMOT currently links through an adapter and
 does not copy or modify upstream source. Any future maintained fork must retain
 MOTIP's copyright and Apache-2.0 notices.
-

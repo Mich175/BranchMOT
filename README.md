@@ -31,6 +31,15 @@ python -m pip install -e ".[dev]"
 pytest
 ```
 
+Before a real MOTIP/DanceTrack export, validate the external inputs:
+
+```bash
+branchmot-preflight \
+  --motip-root /path/to/MOTIP \
+  --data-root /path/to/datasets \
+  --checkpoint /path/to/r50_deformable_detr_motip_dancetrack.pth
+```
+
 ## Planned evaluation
 
 Primary benchmarks: DanceTrack, SportsMOT, MOT17, and MOT20.
@@ -44,4 +53,3 @@ plan and ablation matrix.
 ## Status
 
 Early research prototype. APIs and experiment formats may change.
-

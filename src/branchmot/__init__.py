@@ -10,6 +10,8 @@ from .lifecycle import (
 )
 from .metrics import association_calibration
 from .motip_adapter import MOTIPProjection, make_cache_frame, project_motip_scores
+from .motip_tap import MOTIPScoreTap, probabilities_from_logits
+from .preflight import PreflightReport, check_experiment
 from .replay import ReplayResult, best_one_to_one, replay_aligned_episode
 
 __all__ = [
@@ -21,12 +23,16 @@ __all__ = [
     "LifecycleAssociator",
     "LifecycleHypothesis",
     "MOTIPProjection",
+    "MOTIPScoreTap",
+    "PreflightReport",
     "ReplayResult",
     "association_calibration",
     "best_one_to_one",
+    "check_experiment",
     "decompose_conflicts",
     "enumerate_lifecycle_assignments",
     "make_cache_frame",
+    "probabilities_from_logits",
     "project_motip_scores",
     "read_jsonl",
     "replay_aligned_episode",

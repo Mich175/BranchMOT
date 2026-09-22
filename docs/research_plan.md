@@ -29,6 +29,7 @@ and post-occlusion slices, with mean delay below eight frames.
 
 - Integrate with an ID-prediction baseline.
 - Replace exhaustive local permutations with sparse conflict-subgraph search.
+- Treat rectangular conflict components explicitly as birth/death cases.
 - Add appearance, motion, mask, and group-relation path scores.
 
 ## Required ablations

@@ -13,6 +13,9 @@ cost and latency of offline global optimization?
 3. Evaluate on DanceTrack validation with identical detections.
 4. Stratify association accuracy by occlusion length and target similarity.
 
+The integration contract and cache insertion point are documented in
+[`MOTIP_INTEGRATION.md`](MOTIP_INTEGRATION.md).
+
 **Go criterion:** a repeatable AssA/IDSW improvement concentrated in ambiguous
 and post-occlusion slices, with mean delay below eight frames.
 
@@ -45,4 +48,3 @@ and post-occlusion slices, with mean delay below eight frames.
 - Do not call the method real-time until measured end to end.
 - Do not attribute gains to uncertainty calibration without reliability tests.
 - Do not compare methods using different detections without a separate label.
-

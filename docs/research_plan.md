@@ -37,13 +37,19 @@ and post-occlusion slices, with mean delay below eight frames.
 - Report association ECE, NLL, Brier score, and risk-coverage curves.
 - Gate long-term memory writes using calibrated confidence.
 
-## Stage 3 — End-to-end integration
+## Stage 3 — Hypothesis-conditioned memory integration
 
-- Integrate with an ID-prediction baseline.
+- Fork ID-prompt and trajectory memory for every retained local hypothesis.
+- Re-run the ID decoder under each private memory so future evidence is truly
+  hypothesis-conditioned rather than a rescore of fixed cached probabilities.
+- Commit the winning memory atomically; unresolved branches never write to the
+  canonical tracker state.
 - Replace exhaustive local permutations with sparse conflict-subgraph search.
 - Treat rectangular conflict components explicitly as birth/death cases.
 - Score newborn assignments and missed tracks inside the same delayed beam.
 - Add appearance, motion, mask, and group-relation path scores.
+- Train calibrated error-risk and branch-ranking heads with explicit compute
+  and latency penalties; see [`TRAINING.md`](TRAINING.md).
 
 ## Required ablations
 
@@ -55,6 +61,8 @@ and post-occlusion slices, with mean delay below eight frames.
 | Memory update | always, hard gate, soft gate |
 | Path cues | appearance, motion, mask, relations |
 | Search scope | global, local conflict subgraph |
+| Future decoder | fixed cached logits, hypothesis-conditioned memory |
+| Branch budget | fixed K, posterior-mass adaptive |
 
 ## Publication claims to avoid until demonstrated
 

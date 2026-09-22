@@ -9,6 +9,12 @@ the evidence is ambiguous. Later observations rescore the beam before the
 identity decision is committed, reducing post-occlusion identity switches and
 preventing uncertain observations from contaminating long-term track memory.
 
+The publication-oriented path goes further than score post-processing:
+`HypothesisConditionedAssociator` forks the ID-prompt/trajectory memory for
+each local hypothesis, decodes future evidence under each private history, and
+atomically commits only the winning memory. See [`docs/TRAINING.md`](docs/TRAINING.md)
+for the staged MOTIP fine-tuning recipe.
+
 ## Research hypothesis
 
 Modern online trackers often make an irreversible identity decision from one

@@ -1,0 +1,57 @@
+experiment:
+  name: branchmot_hypothesis_conditioned_memory
+  seed: 42
+  base_checkpoint: r50_deformable_detr_motip_dancetrack.pth
+
+data:
+  dataset: dancetrack
+  clip_length: 12
+  warmup_frames: 4
+  branch_horizon: 4
+  sampling:
+    hard_conflicts: 0.50
+    occlusion_recovery: 0.25
+    ordinary_tracking: 0.25
+  minimum_conflict_iou: 0.30
+
+model:
+  freeze_detector: true
+  train_id_decoder: true
+  train_memory_updater: true
+  risk_head_hidden_dim: 128
+  branch_score_hidden_dim: 256
+
+branching:
+  max_branches: 4
+  max_delay: 4
+  retained_posterior_mass: 0.95
+  commit_posterior: 0.90
+  max_conflict_size: 6
+  entropy_threshold: 0.55
+  margin_threshold: 0.20
+
+loss:
+  id_prediction: 1.0
+  branch_ranking: 0.5
+  risk_calibration: 0.2
+  compute_budget: 0.01
+  delay_budget: 0.01
+
+optimization:
+  stage1_risk_epochs: 5
+  stage2_branch_epochs: 12
+  stage3_joint_epochs: 6
+  batch_size: 2
+  gradient_accumulation: 8
+  id_decoder_lr: 0.00001
+  new_heads_lr: 0.0001
+  weight_decay: 0.0001
+  gradient_clip_norm: 0.1
+  mixed_precision: true
+
+validation:
+  primary_metric: AssA
+  secondary_metrics: [HOTA, IDF1, IDSW]
+  report_latency: true
+  report_branch_count: true
+  early_stopping_patience: 4

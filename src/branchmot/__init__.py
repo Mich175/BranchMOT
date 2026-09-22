@@ -1,6 +1,12 @@
 """BranchMOT research primitives."""
 
 from .association import AssociationConfig, BranchingAssociator, Hypothesis
+from .branch_memory import (
+    ConditionalMemoryBranch,
+    ConditionalMemoryConfig,
+    ConditionalMemoryDecision,
+    HypothesisConditionedAssociator,
+)
 from .cache import AssociationFrame, read_jsonl, write_jsonl
 from .conflicts import ConflictComponent, decompose_conflicts
 from .evaluate import CacheEvaluation, evaluate_cache
@@ -38,8 +44,12 @@ __all__ = [
     "AssociationFrame",
     "BranchingAssociator",
     "CacheEvaluation",
+    "ConditionalMemoryBranch",
+    "ConditionalMemoryConfig",
+    "ConditionalMemoryDecision",
     "ConflictComponent",
     "Hypothesis",
+    "HypothesisConditionedAssociator",
     "IdentityAssignmentMetrics",
     "IdentityTargetStats",
     "LifecycleAssociator",

@@ -1,0 +1,29 @@
+experiment:
+  name: branchmot_dancetrack_mvp
+  seed: 42
+
+association:
+  beam_size: 4
+  max_delay: 8
+  entropy_threshold: 0.55
+  margin_threshold: 0.20
+
+baseline:
+  family: motip
+  input: cached_association_probabilities
+
+evaluation:
+  datasets: [dancetrack]
+  metrics:
+    - HOTA
+    - AssA
+    - IDF1
+    - IDSW
+    - association_ece
+    - association_brier
+    - mean_decision_latency
+  slices:
+    - occlusion_length
+    - crowd_density
+    - appearance_similarity
+

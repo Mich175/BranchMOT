@@ -52,6 +52,19 @@ branchmot-synthetic --occlusion-lengths 1 2 4 8 --max-delays 2 4 8 16 \
 This writes CSV and JSON results under `results/` for regression testing and
 later comparison with DanceTrack slices.
 
+Evaluate an exported MOTIP cache against a DanceTrack sequence:
+
+```bash
+branchmot-evaluate outputs/branchmot_cache/sequence.jsonl \
+  /path/to/DanceTrack/val/sequence/gt/gt.txt \
+  --annotated-cache outputs/branchmot_cache/sequence.annotated.jsonl \
+  --output results/sequence.identity.json
+```
+
+The report separates GT matching coverage from causally evaluable identity
+coverage, so the first appearance of a target is never counted using leaked
+current-frame identity information.
+
 The checked-in [reference run](benchmarks/reference/synthetic_seed42.csv) is a
 mechanism sanity check only; see
 [`docs/synthetic_benchmark.md`](docs/synthetic_benchmark.md) for limitations.

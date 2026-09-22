@@ -3,6 +3,7 @@
 from .association import AssociationConfig, BranchingAssociator, Hypothesis
 from .cache import AssociationFrame, read_jsonl, write_jsonl
 from .conflicts import ConflictComponent, decompose_conflicts
+from .evaluate import CacheEvaluation, evaluate_cache
 from .identity_targets import (
     IdentityAssignmentMetrics,
     IdentityTargetStats,
@@ -36,6 +37,7 @@ __all__ = [
     "AssociationConfig",
     "AssociationFrame",
     "BranchingAssociator",
+    "CacheEvaluation",
     "ConflictComponent",
     "Hypothesis",
     "IdentityAssignmentMetrics",
@@ -55,6 +57,7 @@ __all__ = [
     "box_iou_xyxy",
     "decompose_conflicts",
     "enumerate_lifecycle_assignments",
+    "evaluate_cache",
     "find_occlusion_events",
     "identity_assignment_metrics",
     "linear_sum_assignment",

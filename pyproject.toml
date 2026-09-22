@@ -15,6 +15,7 @@ dependencies = ["numpy>=1.24"]
 [project.scripts]
 branchmot-preflight = "branchmot.preflight:main"
 branchmot-synthetic = "branchmot.synthetic:main"
+branchmot-evaluate = "branchmot.evaluate:main"
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "ruff>=0.6"]

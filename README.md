@@ -40,6 +40,20 @@ branchmot-preflight \
   --checkpoint /path/to/r50_deformable_detr_motip_dancetrack.pth
 ```
 
+Run the deterministic crossing/occlusion stress benchmark:
+
+```bash
+branchmot-synthetic --occlusion-lengths 1 2 4 8 --max-delays 2 4 8 16 \
+  --episodes 200 --seed 42
+```
+
+This writes CSV and JSON results under `results/` for regression testing and
+later comparison with DanceTrack slices.
+
+The checked-in [reference run](benchmarks/reference/synthetic_seed42.csv) is a
+mechanism sanity check only; see
+[`docs/synthetic_benchmark.md`](docs/synthetic_benchmark.md) for limitations.
+
 ## Planned evaluation
 
 Primary benchmarks: DanceTrack, SportsMOT, MOT17, and MOT20.

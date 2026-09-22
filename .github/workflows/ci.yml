@@ -19,3 +19,8 @@ jobs:
         run: ruff check .
       - name: Test
         run: pytest
+      - name: Synthetic smoke benchmark
+        run: >-
+          python -m branchmot.synthetic --occlusion-lengths 2 4
+          --max-delays 2 4 --episodes 5 --seed 42
+          --output-dir artifacts/synthetic-smoke

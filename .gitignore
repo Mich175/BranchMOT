@@ -9,9 +9,9 @@ venv/
 build/
 dist/
 outputs/
+results/
 checkpoints/
 datasets/
 wandb/
 .idea/
 .vscode/
-

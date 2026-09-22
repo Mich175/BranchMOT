@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from branchmot import check_experiment
+from branchmot.preflight import check_experiment
 
 
 def test_preflight_reports_complete_layout(tmp_path: Path) -> None:

@@ -15,6 +15,10 @@ each local hypothesis, decodes future evidence under each private history, and
 atomically commits only the winning memory. See [`docs/TRAINING.md`](docs/TRAINING.md)
 for the staged MOTIP fine-tuning recipe.
 
+`MOTIPStateAdapter` provides the correctness-first runtime boundary: complete
+ID recycling and trajectory state is restored transactionally for each branch,
+and decoder failures cannot leak partial state into the online tracker.
+
 ## Research hypothesis
 
 Modern online trackers often make an irreversible identity decision from one

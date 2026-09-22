@@ -102,6 +102,12 @@ Tensor storage should be shared until a branch writes to it; copying the full
 video state for every hypothesis would erase the runtime advantage. Only the
 small conflict subgraph needs branch-private tensors.
 
+The current `MOTIPStateAdapter` intentionally begins with correctness-first
+full tensor clones and transactional restoration. This is the reference
+implementation for equivalence tests. Conflict-column copy-on-write is the
+subsequent optimization and must reproduce the reference branch scores and
+committed state exactly.
+
 ## Leakage and evaluation rules
 
 - Split by video sequence before mining clips.

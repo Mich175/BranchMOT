@@ -56,6 +56,30 @@ thresholding. All original methods are restored when the tap closes.
 `branchmot.link_cache_frames` converts captured boxes into short-term chain IDs
 using the motion/IoU linker.
 
+## Branch-private runtime state
+
+At the pinned upstream commit, an assignment can mutate more than trajectory
+features. `MOTIPStateAdapter` therefore snapshots and restores the complete
+assignment-dependent boundary:
+
+- `next_id`, `id_label_to_id`, and the recency-ordered `id_queue`;
+- `trajectory_features`, `trajectory_boxes`, `trajectory_id_labels`;
+- `trajectory_times`, `trajectory_masks`, and `current_track_results`.
+
+`adapter.transact(branch_state, operation)` temporarily activates one branch,
+runs a decoder/update operation, captures its successor, and restores the
+canonical runtime in a `finally` block. `adapter.commit(winner)` is the only
+operation that replaces canonical state. Tensor storage is cloned on both
+capture and restore, including nested tensors in current results, preventing
+in-place writes in upstream `_update_trajectory_infos` from crossing branch
+boundaries.
+
+The verified source contract is commit
+`ffc0e905ac196a603027eca8d18fb0dff48c8bcc`. The adapter fails closed when
+required fields or the ID-vocabulary size differ. A later performance pass can
+replace full safe clones with conflict-column copy-on-write storage without
+changing the inference API.
+
 ## Causal identity targets
 
 MOTIP's vocabulary labels are recyclable and therefore cannot be compared

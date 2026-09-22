@@ -36,10 +36,18 @@ from .mot_ground_truth import (
     read_mot_ground_truth,
 )
 from .motip_adapter import MOTIPProjection, make_cache_frame, project_motip_scores
+from .motip_state import (
+    MOTIP_RUNTIME_COMMIT,
+    MOTIPRuntimeState,
+    MOTIPStateAdapter,
+    capture_motip_state,
+    restore_motip_state,
+)
 from .motip_tap import MOTIPScoreTap, probabilities_from_logits
 from .replay import ReplayResult, best_one_to_one, replay_aligned_episode
 
 __all__ = [
+    "MOTIP_RUNTIME_COMMIT",
     "AssociationConfig",
     "AssociationFrame",
     "BranchingAssociator",
@@ -55,7 +63,9 @@ __all__ = [
     "LifecycleAssociator",
     "LifecycleHypothesis",
     "MOTIPProjection",
+    "MOTIPRuntimeState",
     "MOTIPScoreTap",
+    "MOTIPStateAdapter",
     "MOTObject",
     "ObservationChainLinker",
     "OcclusionEvent",
@@ -65,6 +75,7 @@ __all__ = [
     "attach_internal_identity_targets",
     "best_one_to_one",
     "box_iou_xyxy",
+    "capture_motip_state",
     "decompose_conflicts",
     "enumerate_lifecycle_assignments",
     "evaluate_cache",
@@ -78,5 +89,6 @@ __all__ = [
     "read_jsonl",
     "read_mot_ground_truth",
     "replay_aligned_episode",
+    "restore_motip_state",
     "write_jsonl",
 ]

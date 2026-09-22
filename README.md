@@ -18,6 +18,8 @@ for the staged MOTIP fine-tuning recipe.
 `MOTIPStateAdapter` provides the correctness-first runtime boundary: complete
 ID recycling and trajectory state is restored transactionally for each branch,
 and decoder failures cannot leak partial state into the online tracker.
+Real experiments must first pass the framewise official/replay equivalence gate
+documented in [`docs/MOTIP_INTEGRATION.md`](docs/MOTIP_INTEGRATION.md).
 
 ## Research hypothesis
 

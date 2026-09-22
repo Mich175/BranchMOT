@@ -41,6 +41,12 @@ from .motip_branch import (
     MOTIPBranchObservation,
     MOTIPConditionalTracker,
 )
+from .motip_equivalence import (
+    MOTIPEquivalenceReport,
+    assert_one_frame_equivalent,
+    compare_motip_states,
+    verify_one_frame_equivalence,
+)
 from .motip_state import (
     MOTIP_RUNTIME_COMMIT,
     MOTIPRuntimeState,
@@ -70,6 +76,7 @@ __all__ = [
     "MOTIPBranchDecoder",
     "MOTIPBranchObservation",
     "MOTIPConditionalTracker",
+    "MOTIPEquivalenceReport",
     "MOTIPProjection",
     "MOTIPRuntimeState",
     "MOTIPScoreTap",
@@ -79,11 +86,13 @@ __all__ = [
     "OcclusionEvent",
     "ReplayResult",
     "annotate_cache_with_ground_truth",
+    "assert_one_frame_equivalent",
     "association_calibration",
     "attach_internal_identity_targets",
     "best_one_to_one",
     "box_iou_xyxy",
     "capture_motip_state",
+    "compare_motip_states",
     "decompose_conflicts",
     "enumerate_lifecycle_assignments",
     "evaluate_cache",
@@ -98,5 +107,6 @@ __all__ = [
     "read_mot_ground_truth",
     "replay_aligned_episode",
     "restore_motip_state",
+    "verify_one_frame_equivalence",
     "write_jsonl",
 ]

@@ -121,6 +121,36 @@ class MOTIPBranchDecoder:
         )
         return successor
 
+    def apply_resolved(
+        self,
+        state: MOTIPRuntimeState,
+        *,
+        boxes: Any,
+        output_embeds: Any,
+        scores: Any,
+        categories: Any,
+        pred_id_labels: list[int] | tuple[int, ...],
+    ) -> MOTIPRuntimeState:
+        """Replay a complete pre-newborn MOTIP assignment for equivalence tests."""
+
+        labels = [int(label) for label in pred_id_labels]
+        if len(labels) != len(_to_numpy(boxes)):
+            raise ValueError("resolved ID labels must align with activated detections")
+        observation = MOTIPBranchObservation(
+            boxes=boxes,
+            output_embeds=output_embeds,
+            conflict_detection_indices=(),
+            candidate_id_labels=(),
+            fixed_id_labels=tuple(labels),
+            scores=scores,
+            categories=categories,
+        )
+        _, successor = self.state_adapter.transact(
+            state,
+            lambda active: self._apply_full_frame(active, observation, labels),
+        )
+        return successor
+
     @staticmethod
     def _apply_full_frame(
         runtime: Any,

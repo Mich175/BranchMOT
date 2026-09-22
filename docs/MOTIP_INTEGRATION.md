@@ -103,6 +103,24 @@ logically unchanged; once the posterior or latency rule fires, the winning
 successor is committed atomically. `reset()` discards pending branches without
 touching canonical state.
 
+## Required equivalence gate
+
+Before enabling any branch, run `assert_one_frame_equivalent` on at least the
+first 50 frames of representative sequences. For each frame it:
+
+1. captures the pre-frame state;
+2. runs unmodified upstream `RuntimeTracker.update`;
+3. records the exact pre-newborn labels and post-filter boxes/features;
+4. restores the pre-frame state and replays the same decisions through the
+   BranchMOT private-state updater;
+5. compares every trajectory tensor, ID counter, stable-ID mapping, queue
+   order, and output tensor;
+6. restores the official post-frame state so checking can continue.
+
+Any mismatched field fails the run. A minimal sequence-prefix wrapper is in
+[`integrations/motip/equivalence_example.py`](../integrations/motip/equivalence_example.py).
+This gate tests implementation equivalence, not BranchMOT accuracy.
+
 ## Causal identity targets
 
 MOTIP's vocabulary labels are recyclable and therefore cannot be compared

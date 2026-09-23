@@ -1,0 +1,194 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="650" viewBox="0 0 1800 650" role="img" aria-labelledby="title desc">
+  <title id="title">BranchMOT architecture overview</title>
+  <desc id="desc">A left-to-right network diagram showing video frames, the shared MOTIP backbone and identity decoder, a calibrated risk gate, local hypothesis branches with private memories, temporal scoring, atomic commit, and online track output.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#53606f"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#3977b8"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1f2937" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      .label{font-family:Arial,Helvetica,sans-serif;fill:#182433;font-size:22px;font-weight:700}
+      .body{font-family:Arial,Helvetica,sans-serif;fill:#27384a;font-size:18px;font-weight:400}
+      .small{font-family:Arial,Helvetica,sans-serif;fill:#526273;font-size:15px;font-weight:400}
+      .tiny{font-family:Arial,Helvetica,sans-serif;fill:#526273;font-size:13px;font-weight:400}
+      .stage{font-family:Arial,Helvetica,sans-serif;fill:#6b7785;font-size:14px;font-weight:700;letter-spacing:1.4px}
+      .node{stroke:#8fa1b3;stroke-width:1.5;rx:12;filter:url(#shadow)}
+      .edge{fill:none;stroke:#53606f;stroke-width:2.2;marker-end:url(#arrow)}
+      .edgeBlue{fill:none;stroke:#3977b8;stroke-width:2.4;marker-end:url(#arrow-blue)}
+      .thin{fill:none;stroke:#7d8b99;stroke-width:1.6;marker-end:url(#arrow)}
+    </style>
+  </defs>
+
+  <rect width="1800" height="650" fill="#ffffff"/>
+
+  <!-- Stage labels -->
+  <text x="52" y="40" class="stage">INPUT</text>
+  <text x="250" y="40" class="stage">SHARED MOTIP ENCODER</text>
+  <text x="660" y="40" class="stage">UNCERTAINTY ROUTING</text>
+  <text x="1000" y="40" class="stage">HYPOTHESIS-CONDITIONED REASONING</text>
+  <text x="1584" y="40" class="stage">OUTPUT</text>
+
+  <!-- Input frames -->
+  <g transform="translate(45,215)">
+    <rect x="0" y="26" width="118" height="112" rx="7" fill="#e8edf2" stroke="#9aa8b6"/>
+    <rect x="10" y="13" width="118" height="112" rx="7" fill="#f1f4f7" stroke="#8fa1b3"/>
+    <rect x="20" y="0" width="118" height="112" rx="7" fill="#f8fafc" stroke="#718397" stroke-width="1.5"/>
+    <rect x="41" y="28" width="23" height="53" rx="3" fill="#7aa6d1" opacity="0.75"/>
+    <circle cx="52" cy="19" r="8" fill="#7aa6d1"/>
+    <rect x="90" y="38" width="22" height="43" rx="3" fill="#df9b61" opacity="0.78"/>
+    <circle cx="101" cy="29" r="8" fill="#df9b61"/>
+    <path d="M10 92 C42 76, 78 104, 128 84" fill="none" stroke="#c1ccd6" stroke-width="3"/>
+    <text x="69" y="168" text-anchor="middle" class="label">Video frames</text>
+    <text x="69" y="191" text-anchor="middle" class="small">t − 1, t, t + 1</text>
+  </g>
+
+  <!-- Backbone -->
+  <path d="M190 296 H244" class="edge"/>
+  <g transform="translate(245,185)">
+    <rect width="184" height="218" class="node" fill="#e9f2fb" stroke="#76a4cf"/>
+    <g transform="translate(34,30)">
+      <rect x="0" y="40" width="46" height="76" rx="5" fill="#b8d3ec" stroke="#5688b7"/>
+      <rect x="23" y="20" width="46" height="96" rx="5" fill="#91badf" stroke="#5688b7"/>
+      <rect x="46" y="0" width="46" height="116" rx="5" fill="#699fce" stroke="#3977b8"/>
+      <path d="M102 57 H122" class="thin"/>
+      <circle cx="135" cy="57" r="10" fill="#3977b8" opacity="0.85"/>
+    </g>
+    <text x="92" y="173" text-anchor="middle" class="label">Backbone</text>
+    <text x="92" y="198" text-anchor="middle" class="small">features + queries</text>
+  </g>
+
+  <!-- ID decoder -->
+  <path d="M429 294 H475" class="edge"/>
+  <g transform="translate(476,185)">
+    <rect width="174" height="218" class="node" fill="#e9f2fb" stroke="#76a4cf"/>
+    <g transform="translate(40,31)">
+      <rect x="0" y="0" width="94" height="92" rx="8" fill="#ffffff" stroke="#699fce" stroke-width="1.5"/>
+      <circle cx="23" cy="25" r="8" fill="#6598c7"/>
+      <circle cx="47" cy="25" r="8" fill="#6598c7" opacity="0.72"/>
+      <circle cx="71" cy="25" r="8" fill="#6598c7" opacity="0.45"/>
+      <path d="M18 49 H76 M18 62 H67 M18 75 H57" stroke="#7f9fbd" stroke-width="5" stroke-linecap="round"/>
+    </g>
+    <text x="87" y="173" text-anchor="middle" class="label">ID decoder</text>
+    <text x="87" y="198" text-anchor="middle" class="small">association logits</text>
+  </g>
+
+  <!-- Canonical memory -->
+  <g transform="translate(467,478)">
+    <ellipse cx="96" cy="13" rx="96" ry="13" fill="#dce8f3" stroke="#718ca7"/>
+    <rect x="0" y="13" width="192" height="56" fill="#eaf2f9" stroke="#718ca7"/>
+    <ellipse cx="96" cy="69" rx="96" ry="13" fill="#dce8f3" stroke="#718ca7"/>
+    <text x="96" y="44" text-anchor="middle" class="body">Canonical memory</text>
+    <text x="96" y="105" text-anchor="middle" class="tiny">trajectory features · ID labels · boxes</text>
+  </g>
+  <path d="M563 478 V414" class="edgeBlue"/>
+
+  <!-- Risk head -->
+  <path d="M650 294 H695" class="edge"/>
+  <g transform="translate(696,207)">
+    <rect width="218" height="174" class="node" fill="#fff4e7" stroke="#d69a59"/>
+    <circle cx="55" cy="65" r="28" fill="#f0b46f" opacity="0.9"/>
+    <path d="M55 46 V65 L70 75" fill="none" stroke="#744719" stroke-width="4" stroke-linecap="round"/>
+    <rect x="101" y="40" width="84" height="15" rx="7" fill="#ead8c3"/>
+    <rect x="101" y="40" width="60" height="15" rx="7" fill="#dc8b39"/>
+    <rect x="101" y="68" width="84" height="15" rx="7" fill="#ead8c3"/>
+    <rect x="101" y="68" width="33" height="15" rx="7" fill="#dc8b39" opacity="0.75"/>
+    <text x="109" y="123" text-anchor="middle" class="label">Calibrated risk</text>
+    <text x="109" y="149" text-anchor="middle" class="small">P(immediate ID error)</text>
+  </g>
+
+  <!-- Easy bypass -->
+  <path d="M805 207 V112 H1533 V265 H1580" class="edge"/>
+  <rect x="896" y="89" width="137" height="34" rx="17" fill="#eef4f8" stroke="#a2b0bd"/>
+  <text x="964" y="112" text-anchor="middle" class="small">low risk: commit</text>
+
+  <!-- Ambiguous gate to conflict -->
+  <path d="M914 294 H955" class="edge"/>
+  <text x="928" y="275" class="tiny">high risk</text>
+  <g transform="translate(956,197)">
+    <rect width="192" height="194" class="node" fill="#f4ecfa" stroke="#a981c0"/>
+    <g transform="translate(28,30)">
+      <circle cx="12" cy="18" r="10" fill="#a57ac0"/>
+      <circle cx="12" cy="63" r="10" fill="#a57ac0"/>
+      <circle cx="12" cy="108" r="10" fill="#a57ac0"/>
+      <circle cx="124" cy="18" r="10" fill="#7e5a97"/>
+      <circle cx="124" cy="63" r="10" fill="#7e5a97"/>
+      <circle cx="124" cy="108" r="10" fill="#7e5a97"/>
+      <path d="M22 18 H114 M22 18 L114 63 M22 63 L114 18 M22 63 H114 M22 108 H114" stroke="#936bad" stroke-width="2.2" opacity="0.8"/>
+    </g>
+    <text x="96" y="167" text-anchor="middle" class="label">Local conflict</text>
+    <text x="96" y="188" text-anchor="middle" class="small">valid 1-to-1 hypotheses</text>
+  </g>
+
+  <!-- Branching area -->
+  <rect x="1190" y="167" width="338" height="352" rx="18" fill="#f8fbfd" stroke="#9aacbc" stroke-width="1.5" stroke-dasharray="8 6"/>
+  <text x="1210" y="196" class="stage">PRIVATE BRANCH STATES</text>
+  <path d="M1148 294 H1185" class="edge"/>
+  <path d="M1185 294 C1204 294,1194 238,1220 238" class="thin"/>
+  <path d="M1185 294 H1220" class="thin"/>
+  <path d="M1185 294 C1204 294,1194 406,1220 406" class="thin"/>
+
+  <g transform="translate(1220,211)">
+    <rect width="274" height="70" rx="10" fill="#edf6ef" stroke="#6ca47a"/>
+    <rect x="12" y="12" width="48" height="46" rx="6" fill="#b9dcc0"/>
+    <text x="36" y="42" text-anchor="middle" class="body">h₁</text>
+    <text x="73" y="31" class="body">private memory</text>
+    <text x="73" y="53" class="tiny">decode → update → score</text>
+  </g>
+  <g transform="translate(1220,295)">
+    <rect width="274" height="70" rx="10" fill="#edf6ef" stroke="#6ca47a"/>
+    <rect x="12" y="12" width="48" height="46" rx="6" fill="#b9dcc0"/>
+    <text x="36" y="42" text-anchor="middle" class="body">h₂</text>
+    <text x="73" y="31" class="body">private memory</text>
+    <text x="73" y="53" class="tiny">decode → update → score</text>
+  </g>
+  <text x="1357" y="387" text-anchor="middle" class="label">⋮</text>
+  <g transform="translate(1220,420)">
+    <rect width="274" height="70" rx="10" fill="#edf6ef" stroke="#6ca47a"/>
+    <rect x="12" y="12" width="48" height="46" rx="6" fill="#b9dcc0"/>
+    <text x="36" y="42" text-anchor="middle" class="body">hₖ</text>
+    <text x="73" y="31" class="body">private memory</text>
+    <text x="73" y="53" class="tiny">decode → update → score</text>
+  </g>
+
+  <!-- Temporal scorer -->
+  <path d="M1528 343 H1566" class="edge"/>
+  <g transform="translate(1567,183)">
+    <rect width="188" height="215" class="node" fill="#edf6ef" stroke="#6ca47a"/>
+    <g transform="translate(28,35)">
+      <path d="M2 96 L34 73 L65 82 L96 38 L128 18" fill="none" stroke="#438c58" stroke-width="4"/>
+      <circle cx="2" cy="96" r="6" fill="#438c58"/>
+      <circle cx="34" cy="73" r="6" fill="#438c58"/>
+      <circle cx="65" cy="82" r="6" fill="#438c58"/>
+      <circle cx="96" cy="38" r="6" fill="#438c58"/>
+      <circle cx="128" cy="18" r="6" fill="#438c58"/>
+      <path d="M2 110 H132" stroke="#adc4b3"/>
+    </g>
+    <text x="94" y="170" text-anchor="middle" class="label">Temporal scorer</text>
+    <text x="94" y="194" text-anchor="middle" class="small">posterior + budget</text>
+  </g>
+
+  <!-- output -->
+  <path d="M1661 398 V447" class="edge"/>
+  <g transform="translate(1581,448)">
+    <rect width="174" height="126" class="node" fill="#f2f5f8" stroke="#8091a2"/>
+    <path d="M35 37 H139 M35 63 H139 M35 89 H139" stroke="#8898a8" stroke-width="2"/>
+    <circle cx="53" cy="37" r="10" fill="#4f8bc4"/>
+    <circle cx="53" cy="63" r="10" fill="#dc8b39"/>
+    <circle cx="53" cy="89" r="10" fill="#438c58"/>
+    <text x="72" y="43" class="body">ID 17</text>
+    <text x="72" y="69" class="body">ID 23</text>
+    <text x="72" y="95" class="body">ID 41</text>
+    <text x="87" y="155" text-anchor="middle" class="label">Online tracks</text>
+  </g>
+
+  <!-- feedback annotation -->
+  <path d="M1581 511 H1518 V558 H660" fill="none" stroke="#3977b8" stroke-width="2.1" stroke-dasharray="7 6" marker-end="url(#arrow-blue)"/>
+  <rect x="927" y="541" width="276" height="34" rx="17" fill="#edf4fb" stroke="#9dbad5"/>
+  <text x="1065" y="564" text-anchor="middle" class="small">atomic winner commit to canonical memory</text>
+</svg>
+

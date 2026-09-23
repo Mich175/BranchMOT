@@ -1,0 +1,217 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="760" viewBox="0 0 1800 760" role="img" aria-labelledby="title desc">
+  <title id="title">BranchMOT component details</title>
+  <desc id="desc">Three paper-style panels explain calibrated risk and sparse conflict detection, hypothesis-conditioned private memories, and posterior-based atomic commitment.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#526170"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#3f8954"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1f2937" flood-opacity="0.10"/>
+    </filter>
+    <style>
+      .title{font-family:Arial,Helvetica,sans-serif;fill:#182433;font-size:24px;font-weight:700}
+      .label{font-family:Arial,Helvetica,sans-serif;fill:#223345;font-size:19px;font-weight:700}
+      .body{font-family:Arial,Helvetica,sans-serif;fill:#2f4152;font-size:16px;font-weight:400}
+      .small{font-family:Arial,Helvetica,sans-serif;fill:#596979;font-size:14px;font-weight:400}
+      .tiny{font-family:Arial,Helvetica,sans-serif;fill:#657484;font-size:12px;font-weight:400}
+      .panel{fill:#fbfcfd;stroke:#a4b0bc;stroke-width:1.5;rx:16}
+      .box{stroke-width:1.4;rx:10;filter:url(#shadow)}
+      .edge{fill:none;stroke:#526170;stroke-width:2;marker-end:url(#arrow)}
+      .thin{fill:none;stroke:#718091;stroke-width:1.5;marker-end:url(#arrow)}
+    </style>
+  </defs>
+
+  <rect width="1800" height="760" fill="#ffffff"/>
+
+  <!-- Panel A -->
+  <g transform="translate(35,35)">
+    <rect width="550" height="680" class="panel"/>
+    <circle cx="38" cy="39" r="20" fill="#d9822b"/>
+    <text x="38" y="47" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="21" font-weight="700" fill="#ffffff">A</text>
+    <text x="72" y="47" class="title">Risk trigger &amp; local conflict</text>
+    <text x="34" y="82" class="small">Branch only where the current ID decision is likely to fail</text>
+
+    <!-- score features -->
+    <g transform="translate(34,112)">
+      <rect width="214" height="112" class="box" fill="#fff4e7" stroke="#d69a59"/>
+      <text x="107" y="28" text-anchor="middle" class="label">Risk features</text>
+      <text x="18" y="56" class="body">entropy · top-2 margin</text>
+      <text x="18" y="79" class="body">age · missed frames · IoU</text>
+      <text x="18" y="102" class="body">motion · appearance</text>
+    </g>
+    <path d="M248 168 H285" class="edge"/>
+    <g transform="translate(286,112)">
+      <rect width="228" height="112" class="box" fill="#fff4e7" stroke="#d69a59"/>
+      <text x="114" y="29" text-anchor="middle" class="label">Calibrated risk head</text>
+      <rect x="28" y="50" width="172" height="18" rx="9" fill="#ead8c3"/>
+      <rect x="28" y="50" width="134" height="18" rx="9" fill="#d9822b"/>
+      <text x="114" y="93" text-anchor="middle" class="body">risk = 0.78  &gt;  τ</text>
+    </g>
+
+    <path d="M400 224 V263" class="edge"/>
+    <rect x="337" y="241" width="130" height="27" rx="13" fill="#fff4e7" stroke="#deb078"/>
+    <text x="402" y="260" text-anchor="middle" class="small">open branch</text>
+
+    <!-- conflict bipartite -->
+    <g transform="translate(49,285)">
+      <text x="0" y="0" class="label">Tracks</text>
+      <text x="378" y="0" class="label">Detections</text>
+      <circle cx="35" cy="58" r="17" fill="#74a5d2"/>
+      <circle cx="35" cy="128" r="17" fill="#74a5d2"/>
+      <circle cx="35" cy="198" r="17" fill="#74a5d2"/>
+      <text x="35" y="64" text-anchor="middle" class="body">1</text>
+      <text x="35" y="134" text-anchor="middle" class="body">2</text>
+      <text x="35" y="204" text-anchor="middle" class="body">3</text>
+
+      <circle cx="417" cy="58" r="17" fill="#a57ac0"/>
+      <circle cx="417" cy="128" r="17" fill="#a57ac0"/>
+      <circle cx="417" cy="198" r="17" fill="#a57ac0"/>
+      <text x="417" y="64" text-anchor="middle" class="body">a</text>
+      <text x="417" y="134" text-anchor="middle" class="body">b</text>
+      <text x="417" y="204" text-anchor="middle" class="body">c</text>
+
+      <path d="M52 58 H400" stroke="#6fa077" stroke-width="3"/>
+      <path d="M52 128 L400 128 M52 128 L400 198 M52 198 L400 128 M52 198 L400 198" stroke="#936bad" stroke-width="2.5"/>
+      <rect x="108" y="93" width="236" height="143" rx="13" fill="#f4ecfa" fill-opacity="0.48" stroke="#a57ac0" stroke-width="2" stroke-dasharray="7 5"/>
+      <text x="226" y="258" text-anchor="middle" class="body">ambiguous connected component</text>
+      <text x="226" y="281" text-anchor="middle" class="small">enumerate only {2,3} ↔ {b,c}</text>
+    </g>
+
+    <g transform="translate(35,598)">
+      <rect width="480" height="49" rx="9" fill="#edf4f9" stroke="#a5b7c7"/>
+      <text x="240" y="21" text-anchor="middle" class="body">Easy component 1→a commits immediately</text>
+      <text x="240" y="40" text-anchor="middle" class="small">uncertain identities do not stall the whole frame</text>
+    </g>
+  </g>
+
+  <!-- Panel B -->
+  <g transform="translate(625,35)">
+    <rect width="550" height="680" class="panel"/>
+    <circle cx="38" cy="39" r="20" fill="#7f5b99"/>
+    <text x="38" y="47" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="21" font-weight="700" fill="#ffffff">B</text>
+    <text x="72" y="47" class="title">Hypothesis-conditioned memory</text>
+    <text x="34" y="82" class="small">Every assignment is decoded under its own causal history</text>
+
+    <!-- canonical memory -->
+    <g transform="translate(153,106)">
+      <ellipse cx="122" cy="12" rx="122" ry="12" fill="#dce8f3" stroke="#718ca7"/>
+      <rect x="0" y="12" width="244" height="56" fill="#eaf2f9" stroke="#718ca7"/>
+      <ellipse cx="122" cy="68" rx="122" ry="12" fill="#dce8f3" stroke="#718ca7"/>
+      <text x="122" y="43" text-anchor="middle" class="label">Canonical memory M<tspan baseline-shift="sub" font-size="13">t−1</tspan></text>
+    </g>
+
+    <path d="M275 186 V225 M275 225 H102 V257 M275 225 V257 M275 225 H448 V257" fill="none" stroke="#6f7f8e" stroke-width="2"/>
+    <circle cx="275" cy="225" r="5" fill="#7f5b99"/>
+
+    <!-- branches -->
+    <g transform="translate(34,258)">
+      <rect width="136" height="178" class="box" fill="#f4ecfa" stroke="#a981c0"/>
+      <text x="68" y="28" text-anchor="middle" class="label">h₁</text>
+      <text x="68" y="51" text-anchor="middle" class="small">2→b, 3→c</text>
+      <ellipse cx="68" cy="78" rx="48" ry="8" fill="#d9c5e6" stroke="#9270aa"/>
+      <rect x="20" y="78" width="96" height="45" fill="#f7f1fb" stroke="#9270aa"/>
+      <ellipse cx="68" cy="123" rx="48" ry="8" fill="#d9c5e6" stroke="#9270aa"/>
+      <text x="68" y="105" text-anchor="middle" class="small">M₁</text>
+      <rect x="20" y="143" width="96" height="23" rx="5" fill="#ffffff" stroke="#b395c7"/>
+      <text x="68" y="160" text-anchor="middle" class="tiny">ID decoder</text>
+    </g>
+    <g transform="translate(207,258)">
+      <rect width="136" height="178" class="box" fill="#edf6ef" stroke="#6ca47a"/>
+      <text x="68" y="28" text-anchor="middle" class="label">h₂</text>
+      <text x="68" y="51" text-anchor="middle" class="small">2→c, 3→b</text>
+      <ellipse cx="68" cy="78" rx="48" ry="8" fill="#c8e2ce" stroke="#6ca47a"/>
+      <rect x="20" y="78" width="96" height="45" fill="#f1f8f3" stroke="#6ca47a"/>
+      <ellipse cx="68" cy="123" rx="48" ry="8" fill="#c8e2ce" stroke="#6ca47a"/>
+      <text x="68" y="105" text-anchor="middle" class="small">M₂</text>
+      <rect x="20" y="143" width="96" height="23" rx="5" fill="#ffffff" stroke="#8dbb97"/>
+      <text x="68" y="160" text-anchor="middle" class="tiny">ID decoder</text>
+    </g>
+    <g transform="translate(380,258)">
+      <rect width="136" height="178" class="box" fill="#f4ecfa" stroke="#a981c0"/>
+      <text x="68" y="28" text-anchor="middle" class="label">hₖ</text>
+      <text x="68" y="51" text-anchor="middle" class="small">birth / miss</text>
+      <ellipse cx="68" cy="78" rx="48" ry="8" fill="#d9c5e6" stroke="#9270aa"/>
+      <rect x="20" y="78" width="96" height="45" fill="#f7f1fb" stroke="#9270aa"/>
+      <ellipse cx="68" cy="123" rx="48" ry="8" fill="#d9c5e6" stroke="#9270aa"/>
+      <text x="68" y="105" text-anchor="middle" class="small">Mₖ</text>
+      <rect x="20" y="143" width="96" height="23" rx="5" fill="#ffffff" stroke="#b395c7"/>
+      <text x="68" y="160" text-anchor="middle" class="tiny">ID decoder</text>
+    </g>
+
+    <!-- future evidence -->
+    <path d="M102 436 V476 M275 436 V476 M448 436 V476" class="thin"/>
+    <g transform="translate(35,478)">
+      <rect width="480" height="92" rx="12" fill="#eef4f8" stroke="#9cafbf"/>
+      <text x="240" y="27" text-anchor="middle" class="label">Same future observations</text>
+      <g transform="translate(100,42)">
+        <rect x="0" y="0" width="68" height="34" rx="5" fill="#ffffff" stroke="#8fa1b3"/>
+        <rect x="106" y="0" width="68" height="34" rx="5" fill="#ffffff" stroke="#8fa1b3"/>
+        <rect x="212" y="0" width="68" height="34" rx="5" fill="#ffffff" stroke="#8fa1b3"/>
+        <text x="34" y="23" text-anchor="middle" class="small">t + 1</text>
+        <text x="140" y="23" text-anchor="middle" class="small">t + 2</text>
+        <text x="246" y="23" text-anchor="middle" class="small">t + Δ</text>
+        <path d="M68 17 H102 M174 17 H208" class="thin"/>
+      </g>
+    </g>
+    <path d="M275 570 V600" class="edge"/>
+    <rect x="72" y="602" width="406" height="45" rx="9" fill="#edf6ef" stroke="#8dbb97"/>
+    <text x="275" y="622" text-anchor="middle" class="body">Different memories → different future ID logits</text>
+    <text x="275" y="640" text-anchor="middle" class="small">not a rescore of one shared decoder history</text>
+  </g>
+
+  <!-- Panel C -->
+  <g transform="translate(1215,35)">
+    <rect width="550" height="680" class="panel"/>
+    <circle cx="38" cy="39" r="20" fill="#438c58"/>
+    <text x="38" y="47" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="21" font-weight="700" fill="#ffffff">C</text>
+    <text x="72" y="47" class="title">Score, prune &amp; atomic commit</text>
+    <text x="34" y="82" class="small">Accumulate evidence until confidence or the delay budget resolves the beam</text>
+
+    <!-- branch scores -->
+    <g transform="translate(34,118)">
+      <rect width="482" height="175" class="box" fill="#f7faf8" stroke="#8dbb97"/>
+      <text x="26" y="32" class="label">Temporal posterior</text>
+      <text x="26" y="66" class="body">h₁</text>
+      <rect x="72" y="51" width="350" height="20" rx="10" fill="#e3e9e5"/>
+      <rect x="72" y="51" width="91" height="20" rx="10" fill="#9f82b3"/>
+      <text x="448" y="67" text-anchor="end" class="body">0.26</text>
+      <text x="26" y="108" class="body">h₂</text>
+      <rect x="72" y="93" width="350" height="20" rx="10" fill="#e3e9e5"/>
+      <rect x="72" y="93" width="245" height="20" rx="10" fill="#438c58"/>
+      <text x="448" y="109" text-anchor="end" class="body">0.70</text>
+      <text x="26" y="150" class="body">hₖ</text>
+      <rect x="72" y="135" width="350" height="20" rx="10" fill="#e3e9e5"/>
+      <rect x="72" y="135" width="14" height="20" rx="10" fill="#9f82b3"/>
+      <text x="448" y="151" text-anchor="end" class="body">0.04</text>
+    </g>
+
+    <path d="M275 293 V330" class="edge"/>
+    <g transform="translate(69,332)">
+      <polygon points="206,0 412,78 206,156 0,78" fill="#edf6ef" stroke="#6ca47a" stroke-width="1.5"/>
+      <text x="206" y="64" text-anchor="middle" class="label">posterior ≥ τ</text>
+      <text x="206" y="91" text-anchor="middle" class="body">or age = max delay?</text>
+    </g>
+
+    <!-- no loop -->
+    <path d="M69 410 H32 V226 H68" fill="none" stroke="#7d8b99" stroke-width="1.8" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+    <rect x="20" y="300" width="81" height="26" rx="13" fill="#eef2f5" stroke="#b0bac3"/>
+    <text x="60" y="318" text-anchor="middle" class="small">no: t+1</text>
+
+    <!-- yes -->
+    <path d="M275 488 V528" fill="none" stroke="#3f8954" stroke-width="2.5" marker-end="url(#arrow-green)"/>
+    <rect x="292" y="492" width="52" height="26" rx="13" fill="#edf6ef" stroke="#8dbb97"/>
+    <text x="318" y="510" text-anchor="middle" class="small">yes</text>
+    <g transform="translate(58,530)">
+      <rect width="434" height="92" class="box" fill="#edf6ef" stroke="#6ca47a"/>
+      <text x="217" y="30" text-anchor="middle" class="label">Commit winning state M₂ atomically</text>
+      <path d="M37 55 H397" stroke="#a8cbb0" stroke-width="2"/>
+      <text x="217" y="78" text-anchor="middle" class="body">discard h₁, hₖ · update canonical memory · emit IDs</text>
+    </g>
+    <path d="M275 622 V652" class="edge"/>
+    <text x="275" y="674" text-anchor="middle" class="small">bounded latency · no losing-state contamination</text>
+  </g>
+</svg>
+

@@ -123,58 +123,31 @@ copy-on-write is the planned efficiency optimization.
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    V[Video frame t] --> B[Backbone + detector]
-    B --> Q[Object queries / detections]
-    M[(Canonical MOTIP<br/>trajectory memory)] --> D[ID decoder]
-    Q --> D
-    D --> P[Association probabilities]
-    P --> R[Calibrated error-risk head]
-    R -->|low risk| I[Immediate association]
-    R -->|high risk| C[Local conflict graph]
-    C --> H[Valid top-K hypotheses]
+<p align="center">
+  <img src="docs/assets/branchmot_overview.svg" width="100%" alt="BranchMOT architecture: a left-to-right online MOT network with uncertainty-triggered private memory branches and atomic commitment">
+</p>
 
-    H --> M1[(Private memory h1)]
-    H --> M2[(Private memory h2)]
-    H --> MK[(Private memory hK)]
-    Q --> M1
-    Q --> M2
-    Q --> MK
-
-    M1 --> S[Temporal branch scorer]
-    M2 --> S
-    MK --> S
-    S --> G{Posterior high enough<br/>or delay budget reached?}
-    G -->|no| N[Advance all branches<br/>with frame t+1]
-    N --> S
-    G -->|yes| A[Atomic winner commit]
-    I --> O[Online tracks]
-    A --> O
-    A --> M
-```
+<p align="center"><em>Figure 1. BranchMOT overview. Easy frames follow the
+immediate MOTIP path; only a high-risk local conflict opens a bounded beam of
+hypothesis-conditioned trajectory memories. Future evidence scores the private
+histories before the winner is committed to canonical online state.</em></p>
 
 The network is mostly the pretrained MOTIP detector, trajectory model, and ID
 decoder. BranchMOT adds a risk head, local hypothesis generator, private-memory
 manager, and branch scorer. The detector remains frozen in the first training
 iteration so that the experiment isolates association reasoning.
 
-### Branch lifecycle
+### Main component details
 
-```mermaid
-stateDiagram-v2
-    [*] --> Observe
-    Observe --> CommitNow: calibrated risk below threshold
-    Observe --> Fork: ambiguous local conflict
-    Fork --> DecodePrivate: copy/fork memory per hypothesis
-    DecodePrivate --> Prune: score with future evidence
-    Prune --> DecodePrivate: unresolved and delay remains
-    Prune --> CommitWinner: posterior threshold reached
-    Prune --> CommitWinner: maximum delay reached
-    CommitNow --> OnlineOutput
-    CommitWinner --> OnlineOutput: replace canonical state atomically
-    OnlineOutput --> Observe
-```
+<p align="center">
+  <img src="docs/assets/branchmot_components.svg" width="100%" alt="Detailed BranchMOT components: calibrated risk and conflict detection, hypothesis-conditioned memories, and posterior-based atomic commit">
+</p>
+
+<p align="center"><em>Figure 2. Main components. (A) Calibrated risk opens
+branching only for an ambiguous connected component. (B) Each valid assignment
+owns a private memory and re-decodes the same future observations. (C) The beam
+is pruned by temporal posterior until confidence or the delay budget triggers an
+atomic winner commit.</em></p>
 
 ## Training
 
